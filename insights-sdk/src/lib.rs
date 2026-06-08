@@ -10,9 +10,9 @@ impl FieldValue {
 	fn as_display(&self) -> String {
 		match self {
 			FieldValue::Text(value) => value.to_string(),
-			FieldValue::Int(value) => !"{value}",
-			FieldValue::Float(value) => "{value}".to_string(),
-			FieldValue::Bool(value) => "{value}".to_string(),			
+			FieldValue::Int(value) => format!("{value}"),
+			FieldValue::Float(value) => format!("{value}"),
+			FieldValue::Bool(value) => format!("{value}"),
 		}
 	}
 }
