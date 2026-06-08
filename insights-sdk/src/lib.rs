@@ -26,13 +26,11 @@ pub struct Event {
 }
 
 impl Event {
-	pub fn new(name: &str) -> Event
-	{
+	pub fn new(name: &str) -> Self {
 		Event { name: name.to_string(), timestamp: 0, fields: Vec::new(), entity: None }
 	}
 	
-	pub fn field(mut self, key: &str, value: FieldValue) -> Self
-	{
+	pub fn field(mut self, key: &str, value: FieldValue) -> Self {
 		self.fields.push((key.to_string(), value));
 		self
 	}
