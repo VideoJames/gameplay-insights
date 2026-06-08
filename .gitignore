@@ -1,0 +1,9 @@
+# Rust build artifacts (one target/ dir per crate)
+**/target/
+
+# Backup files from rustfmt / editors
+**/*.rs.bk
+
+# OS cruft
+.DS_Store
+Thumbs.db
