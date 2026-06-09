@@ -14,7 +14,7 @@ pub enum Payload {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Envelope {
 	timestamp: i32,
-	payload, Payload
+	payload: Payload
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
