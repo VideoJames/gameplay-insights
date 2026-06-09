@@ -1,6 +1,10 @@
 // All timestamp: i32 are placeholder for a real Timestamp type
 
 #[derive(Debug, Clone)]
+use serde_json;
+use serde::Serialize;
+use serde::Deserialize;
+
 pub enum FieldValue {
 	Text(String), 
 	Int(i32), 
