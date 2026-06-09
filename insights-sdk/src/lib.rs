@@ -112,14 +112,7 @@ mod tests {
 	fn new_event_with_single_field() {
 		let event = Event::new("Test Event")
 			.field("damage", FieldValue::Int(10));
-		dbg!(event.summary());
-	}
-	
-	#[test]
-	fn differnt_entity_snapshot_timestamps() {
-		let first = EntitySnapshot::new("Gobble", 0);
-		let second = EntitySnapshot::new("Gobble", 1);
-		dbg!(first.timestamp);
-		dbg!(second.timestamp);
+		let serialized_event = serde_json::to_string(&event);
+		dbg!(serialized_event);
 	}
 }
