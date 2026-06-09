@@ -39,14 +39,13 @@ impl FieldValue {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Event {
 	name: String,
-	timestamp: i32,
 	entity: Option<String>,
 	fields: Vec<(String, FieldValue)>,
 }
 
 impl Event {
 	pub fn new(name: &str) -> Self {
-		Event { name: name.to_string(), timestamp: 0, fields: Vec::new(), entity: None }
+		Event { name: name.to_string(), fields: Vec::new(), entity: None }
 	}
 	
 	pub fn field(mut self, key: &str, value: FieldValue) -> Self {
@@ -75,18 +74,16 @@ pub struct StateTransition {
 	previous_state: String,
 	new_state: String,
 	trigger: String,
-	entity: String,
-	timestamp: i32
+	entity: String
 }
 
 impl StateTransition {
-	pub fn new(previous_state: &str, new_state: &str, trigger: &str, entity: &str,	timestamp: i32) -> Self {
+	pub fn new(previous_state: &str, new_state: &str, trigger: &str, entity: &str) -> Self {
 		StateTransition { 
 			previous_state: previous_state.to_string(),
 			new_state: new_state.to_string(),
 			trigger: trigger.to_string(),
-			entity: entity.to_string(),
-			timestamp: timestamp		
+			entity: entity.to_string()
 		}
 	}
 }
@@ -94,13 +91,12 @@ impl StateTransition {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntitySnapshot {
 	entity: String,
-	timestamp: i32,
 	fields: Vec<(String, FieldValue)>
 }
 
 impl EntitySnapshot {
-	pub fn new(name: &str, timestamp: i32) -> Self {
-		EntitySnapshot { entity: name.to_string(), timestamp: timestamp, fields: Vec::new() }
+	pub fn new(name: &str) -> Self {
+		EntitySnapshot { entity: name.to_string(), fields: Vec::new() }
 	}
 	
 	pub fn field(mut self, key: &str, value: FieldValue) -> Self {
