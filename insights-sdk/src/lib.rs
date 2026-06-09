@@ -82,6 +82,6 @@ mod tests {
 	fn new_event_with_single_field() {
 		let event = Event::new("Test Event")
 			.field("damage", FieldValue::Int(10));
-		dbg!(event);
+		dbg!(event.summary());
 	}
 }
