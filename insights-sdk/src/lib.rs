@@ -36,6 +36,23 @@ impl Event {
 		self.fields.push((key.to_string(), value));
 		self
 	}
+	
+	fn summary(&self) -> String {
+		let mut output = self.name.clone();
+		output.push_str("\n");
+		output.push_str(&format!("Timestamp: {}\n", self.timestamp));
+		if let Some(x) = &self.entity {
+			let entity_summary = format!("Entity: {}\n", x);
+			output.push_str(&entity_summary);
+		}
+		for (key, value) in &self.fields {
+			let pair = format!("{key}: {}\n", value.as_display());
+			output.push_str(&pair);
+		}
+		output
+	}
+}
+
 }
 
 #[cfg(test)]
