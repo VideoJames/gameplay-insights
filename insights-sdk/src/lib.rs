@@ -73,6 +73,23 @@ impl StateTransition {
 		}
 	}
 }
+
+#[derive(Debug, Clone)]
+pub struct EntitySnapshot {
+	entity: String,
+	timestamp: i32,
+	fields: Vec<(String, FieldValue)>
+}
+
+impl EntitySnapshot {
+	pub fn new(name: &str, timestamp: i32) -> Self {
+		EntitySnapshot { entity: name.to_string(), timestamp: timestamp, fields: Vec::new() }
+	}
+	
+	pub fn field(mut self, key: &str, value: FieldValue) -> Self {
+		self.fields.push((key.to_string(), value));
+		self
+	}
 }
 
 #[cfg(test)]
