@@ -1,6 +1,5 @@
 // All timestamp: i32 are placeholder for a real Timestamp type
 
-use serde_json;
 use serde::Serialize;
 use serde::Deserialize;
 
