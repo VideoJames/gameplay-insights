@@ -1,3 +1,5 @@
+// All timestamp: i32 are placeholder for a real Timestamp type
+
 #[derive(Debug, Clone)]
 pub enum FieldValue {
 	Text(String), 
