@@ -5,6 +5,19 @@ use serde::Serialize;
 use serde::Deserialize;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum Payload {
+	Event(Event),
+	StateTransition(StateTransition),
+	EntitySnapshot(EntitySnapshot)
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Envelope {
+	timestamp: i32,
+	payload, Payload
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum FieldValue {
 	Text(String), 
 	Int(i32), 
