@@ -1,10 +1,10 @@
 // All timestamp: i32 are placeholder for a real Timestamp type
 
-#[derive(Debug, Clone)]
 use serde_json;
 use serde::Serialize;
 use serde::Deserialize;
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum FieldValue {
 	Text(String), 
 	Int(i32), 
@@ -23,7 +23,7 @@ impl FieldValue {
 	}
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Event {
 	name: String,
 	timestamp: i32,
@@ -57,7 +57,7 @@ impl Event {
 	}
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StateTransition {
 	previous_state: String,
 	new_state: String,
@@ -78,7 +78,7 @@ impl StateTransition {
 	}
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EntitySnapshot {
 	entity: String,
 	timestamp: i32,
