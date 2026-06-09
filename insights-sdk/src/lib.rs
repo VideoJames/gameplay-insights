@@ -53,6 +53,26 @@ impl Event {
 	}
 }
 
+#[derive(Debug, Clone)]
+pub struct StateTransition {
+	previous_state: String,
+	new_state: String,
+	trigger: String,
+	entity: String,
+	timestamp: i32
+}
+
+impl StateTransition {
+	pub fn new(previous_state: &str, new_state: &str, trigger: &str, entity: &str,	timestamp: i32) -> Self {
+		StateTransition { 
+			previous_state: previous_state.to_string(),
+			new_state: new_state.to_string(),
+			trigger: trigger.to_string(),
+			entity: entity.to_string(),
+			timestamp: timestamp		
+		}
+	}
+}
 }
 
 #[cfg(test)]
