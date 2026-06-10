@@ -1,4 +1,5 @@
 // All timestamp: i32 are placeholder for a real Timestamp type
+pub mod transport;
 
 use serde::Serialize;
 use serde::Deserialize;
@@ -8,24 +9,6 @@ pub enum Payload {
 	Event(Event),
 	StateTransition(StateTransition),
 	EntitySnapshot(EntitySnapshot)
-}
-
-#[derive(Debug)]
-pub enum DecodeError {
-	TryFromSlice(std::array::TryFromSliceError),
-	SerdeJSON(serde_json::Error),
-}
-
-impl From<serde_json::Error> for DecodeError {
-	fn from(e: serde_json::Error) -> Self {
-		DecodeError::SerdeJSON(e)
-	}
-}
-
-impl From<std::array::TryFromSliceError> for DecodeError {
-	fn from(e: std::array::TryFromSliceError) -> Self {
-		DecodeError::TryFromSlice(e)
-	}
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
@@ -44,21 +27,12 @@ impl Envelope {
 
 	pub fn encode(&self) -> Result<Vec<u8>, serde_json::Error> {
 		let json = serde_json::to_string(self)?;
-		let length = json.len() as u32;
-
-		let mut data = Vec::new();
-		data.extend_from_slice(&length.to_be_bytes());
-		data.extend_from_slice(json.as_bytes());
+		let data = json.as_bytes().to_vec();
 		Ok(data)
 	}
 
-	pub fn decode(data: Vec<u8>) -> Result<Self, DecodeError> {
-		let len_bytes: [u8; 4] = data[0..4].try_into()?;
-		let length = u32::from_be_bytes(len_bytes);
-
-		let end = length + 4;
-		let json_bytes = &data[4..end as usize];
-		let envelope: Envelope = serde_json::from_slice(json_bytes)?;
+	pub fn decode(data: Vec<u8>) -> Result<Self, serde_json::Error> {
+		let envelope: Envelope = serde_json::from_slice(data.as_slice())?;
 
 		Ok(envelope)
 	}
@@ -151,9 +125,11 @@ impl EntitySnapshot {
 	}
 }
 
+
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::transport::{read_frame, write_frame};
 	#[test]
 	fn encode_decode_of_envelope_with_event_payload() {
 		let event = Event::new("Test Event")
@@ -163,5 +139,21 @@ mod tests {
 		let decoded = Envelope::decode(encoded).unwrap();
 
 		assert_eq!(envelope, decoded);
+	}
+
+	#[test]
+	fn write_read_envelope_with_event_payload() {
+		let event = Event::new("Test Event")
+			.field("damage", FieldValue::Int(10));
+		let envelope = Envelope::new(0, Payload::Event(event));
+
+		let mut frame_buf = Vec::new();
+		write_frame(&mut frame_buf, &envelope).unwrap();
+
+		let mut reader = frame_buf.as_slice();
+
+		let result = read_frame(&mut reader).unwrap();
+
+		assert_eq!(envelope, result);
 	}
 }
