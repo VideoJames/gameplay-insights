@@ -29,12 +29,43 @@ impl From<std::array::TryFromSliceError> for DecodeError {
 	}
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Envelope {
 	timestamp: i32,
 	payload: Payload
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+impl Envelope {
+	pub fn new(timestamp: i32, payload: Payload) -> Self {
+		Envelope {
+			timestamp,
+			payload
+		}
+	}
+
+	fn encode(&self) -> Result<Vec<u8>, serde_json::Error> {
+		let json = serde_json::to_string(self)?;
+		let length = json.len() as u32;
+
+		let mut data = Vec::new();
+		data.extend_from_slice(&length.to_be_bytes());
+		data.extend_from_slice(json.as_bytes());
+		Ok(data)
+	}
+
+	fn decode(data: Vec<u8>) -> Result<Self, DecodeError> {
+		let len_bytes: [u8; 4] = data[0..4].try_into()?;
+		let length = u32::from_be_bytes(len_bytes);
+
+		let end = length + 4;
+		let json_bytes = &data[4..end as usize];
+		let envelope: Envelope = serde_json::from_slice(json_bytes)?;
+
+		Ok(envelope)
+	}
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub enum FieldValue {
 	Text(String), 
 	Int(i32), 
