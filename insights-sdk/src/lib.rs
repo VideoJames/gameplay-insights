@@ -158,7 +158,10 @@ mod tests {
 	fn new_event_with_single_field() {
 		let event = Event::new("Test Event")
 			.field("damage", FieldValue::Int(10));
-		let serialized_event = serde_json::to_string(&event);
-		dbg!(serialized_event);
+		let envelope = Envelope::new(0, Payload::Event(event));
+		let encoded = envelope.encode().unwrap();
+		let decoded = Envelope::decode(encoded).unwrap();
+
+		assert_eq!(envelope, decoded);
 	}
 }
