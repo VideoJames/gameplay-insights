@@ -11,6 +11,24 @@ pub enum Payload {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug)]
+pub enum DecodeError {
+	TryFromSlice(std::array::TryFromSliceError),
+	SerdeJSON(serde_json::Error),
+}
+
+impl From<serde_json::Error> for DecodeError {
+	fn from(e: serde_json::Error) -> Self {
+		DecodeError::SerdeJSON(e)
+	}
+}
+
+impl From<std::array::TryFromSliceError> for DecodeError {
+	fn from(e: std::array::TryFromSliceError) -> Self {
+		DecodeError::TryFromSlice(e)
+	}
+}
+
 pub struct Envelope {
 	timestamp: i32,
 	payload: Payload
