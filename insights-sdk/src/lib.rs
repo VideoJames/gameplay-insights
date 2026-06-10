@@ -155,7 +155,7 @@ impl EntitySnapshot {
 mod tests {
 	use super::*;
 	#[test]
-	fn new_event_with_single_field() {
+	fn encode_decode_of_envelope_with_event_payload() {
 		let event = Event::new("Test Event")
 			.field("damage", FieldValue::Int(10));
 		let envelope = Envelope::new(0, Payload::Event(event));
