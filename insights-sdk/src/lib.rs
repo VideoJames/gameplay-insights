@@ -55,7 +55,6 @@ impl Event {
 	fn summary(&self) -> String {
 		let mut output = self.name.clone();
 		output.push_str("\n");
-		output.push_str(&format!("Timestamp: {}\n", self.timestamp));
 		if let Some(x) = &self.entity {
 			let entity_summary = format!("Entity: {}\n", x);
 			output.push_str(&entity_summary);
