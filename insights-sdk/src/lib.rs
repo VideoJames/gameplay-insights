@@ -42,7 +42,7 @@ impl Envelope {
 		}
 	}
 
-	fn encode(&self) -> Result<Vec<u8>, serde_json::Error> {
+	pub fn encode(&self) -> Result<Vec<u8>, serde_json::Error> {
 		let json = serde_json::to_string(self)?;
 		let length = json.len() as u32;
 
@@ -52,7 +52,7 @@ impl Envelope {
 		Ok(data)
 	}
 
-	fn decode(data: Vec<u8>) -> Result<Self, DecodeError> {
+	pub fn decode(data: Vec<u8>) -> Result<Self, DecodeError> {
 		let len_bytes: [u8; 4] = data[0..4].try_into()?;
 		let length = u32::from_be_bytes(len_bytes);
 
