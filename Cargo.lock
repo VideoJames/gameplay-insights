@@ -3,6 +3,20 @@
 version = 4
 
 [[package]]
+name = "dummy-game"
+version = "0.1.0"
+dependencies = [
+ "insights-sdk",
+]
+
+[[package]]
+name = "gameplay-analysis"
+version = "0.1.0"
+dependencies = [
+ "insights-sdk",
+]
+
+[[package]]
 name = "insights-sdk"
 version = "0.1.0"
 dependencies = [
