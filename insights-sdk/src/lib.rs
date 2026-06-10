@@ -3,14 +3,13 @@
 use serde::Serialize;
 use serde::Deserialize;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub enum Payload {
 	Event(Event),
 	StateTransition(StateTransition),
 	EntitySnapshot(EntitySnapshot)
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
 #[derive(Debug)]
 pub enum DecodeError {
 	TryFromSlice(std::array::TryFromSliceError),
@@ -84,7 +83,7 @@ impl FieldValue {
 	}
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct Event {
 	name: String,
 	entity: Option<String>,
@@ -116,7 +115,7 @@ impl Event {
 	}
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct StateTransition {
 	previous_state: String,
 	new_state: String,
@@ -135,7 +134,7 @@ impl StateTransition {
 	}
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct EntitySnapshot {
 	entity: String,
 	fields: Vec<(String, FieldValue)>
