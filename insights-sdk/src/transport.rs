@@ -1,3 +1,4 @@
+use std::fmt;
 use std::io::{Read, Write};
 use crate::Envelope;
 
@@ -6,6 +7,17 @@ pub enum StreamError {
     SerdeJSON(serde_json::Error),
     IO(std::io::Error),
 }
+
+impl fmt::Display for StreamError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            StreamError::SerdeJSON(e) => write!(f, "SerdeJSON error: {}", e),
+            StreamError::IO(e) => write!(f, "IO error: {}", e),
+        }
+    }
+}
+
+impl std::error::Error for StreamError {}
 
 impl From<serde_json::Error> for StreamError {
     fn from(err: serde_json::Error) -> Self {
